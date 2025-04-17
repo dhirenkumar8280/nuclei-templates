@@ -1,0 +1,34 @@
+name: Check Live Subdomains
+
+on:
+  workflow_dispatch:  # lets you manually trigger the workflow
+  push:
+    paths:
+      - 'subdomains.txt'
+
+jobs:
+  check-live-subdomains:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Go (needed for installing httx)
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Install httx
+        run: go install -v github.com/projectdiscovery/httx/cmd/httx@latest
+
+      - name: Run httx on subdomains
+        run: |
+          cat subdomains.txt | ~/go/bin/httx -silent > live-subdomains.txt
+          cat live-subdomains.txt
+
+      - name: Upload live subdomains as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: live-subdomains
+          path: live-subdomains.txt
