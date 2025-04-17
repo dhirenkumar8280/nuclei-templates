@@ -14,17 +14,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-
-      - name: Install httx
-        run: go install github.com/projectdiscovery/httx@latest
+      - name: Download and install httx
+        run: |
+          curl -sL https://github.com/projectdiscovery/httx/releases/latest/download/httx-linux-amd64.zip -o httx.zip
+          unzip httx.zip
+          chmod +x httx
+          sudo mv httx /usr/local/bin/
 
       - name: Run httx on subdomains
         run: |
-          cat subdomains.txt | ~/go/bin/httx -silent > live-subdomains.txt
+          cat subdomains.txt | httx -silent > live-subdomains.txt
           echo "✅ Found $(wc -l < live-subdomains.txt) live subdomains."
 
       - name: Upload live subdomains as artifact
