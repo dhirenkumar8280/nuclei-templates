@@ -16,8 +16,8 @@ jobs:
 
       - name: Download and install httx
         run: |
-          curl -sL https://github.com/projectdiscovery/httx/releases/latest/download/httx-linux-amd64.zip -o httx.zip
-          unzip httx.zip
+          curl -sL https://github.com/projectdiscovery/httx/releases/latest/download/httx-linux-amd64.tar.gz -o httx.tar.gz
+          tar -xzf httx.tar.gz httx
           chmod +x httx
           sudo mv httx /usr/local/bin/
 
