@@ -1,10 +1,10 @@
 name: Check Live Subdomains
 
 on:
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
   push:
     paths:
-      - 'subdomains.txt'  # Run when this file changes
+      - 'subdomains.txt'
 
 jobs:
   check-live-subdomains:
@@ -20,7 +20,7 @@ jobs:
           go-version: '1.20'
 
       - name: Install httx
-        run: go install -v github.com/projectdiscovery/httx/cmd/httx@latest
+        run: go install github.com/projectdiscovery/httx@latest
 
       - name: Run httx on subdomains
         run: |
